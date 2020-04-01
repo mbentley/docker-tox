@@ -1,6 +1,6 @@
 # mbentley/tox
 
-docker image for tox
+docker image for [tox](https://tox.readthedocs.io/en/latest/)
 based off of ubuntu:18.04
 
 To pull this image:
@@ -21,5 +21,5 @@ docker run -it --rm \
   -v "${PWD}":/data \
   -w /data \
   mbentley/tox \
-    tox -e publishdocs
+    tox --help
 ```
