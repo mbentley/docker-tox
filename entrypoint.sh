@@ -36,6 +36,7 @@ else
   useradd -u "${MY_UID}" -g "${MY_GID}" -d "/home/${MY_USERNAME}" -s /bin/bash "${MY_USERNAME}"
 fi
 
+# create home directory and set permissions
 mkdir -p /home/"${MY_USERNAME}"
 chown "${MY_UID}":"${MY_GID}" /home/"${MY_USERNAME}"
 
