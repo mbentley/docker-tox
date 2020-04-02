@@ -40,6 +40,46 @@ fi
 mkdir -p /home/"${MY_USERNAME}"
 chown "${MY_UID}":"${MY_GID}" /home/"${MY_USERNAME}"
 
+# verify that ~/.cache exists and that the permissions are correct
+if [ ! -d "/home/${MY_USERNAME}/.cache" ]
+then
+  mkdir "/home/${MY_USERNAME}/.cache"
+  chown "${MY_UID}":"${MY_GID}" "/home/${MY_USERNAME}/.cache"
+else
+  # get current owner details
+  OWNER="$(stat -c '%u' "/home/${MY_USERNAME}/.cache")"
+  GROUP="$(stat -c '%g' "/home/${MY_USERNAME}/.cache")"
+
+  # check to see if UID and GID match
+  if [ "${OWNER}" != "${MY_UID}" ] || [ "${GROUP}" != "${MY_GID}" ]
+  then
+    # UID or GID doesn't match, set permissions
+    echo "WARNING: owner or group (${OWNER}:${GROUP}) not set correctly on '/home/${MY_USERNAME}/.cache'"
+    echo "INFO: setting correct permissions (${MY_UID}:${MY_GID})"
+    chown "${MY_UID}":"${MY_GID}" "/home/${MY_USERNAME}/.cache"
+  fi
+fi
+
+# verify that ~/.local exists and that the permissions are correct
+if [ ! -d "/home/${MY_USERNAME}/.local" ]
+then
+  mkdir "/home/${MY_USERNAME}/.local"
+  chown "${MY_UID}":"${MY_GID}" "/home/${MY_USERNAME}/.local"
+else
+  # get current owner details
+  OWNER="$(stat -c '%u' "/home/${MY_USERNAME}/.local")"
+  GROUP="$(stat -c '%g' "/home/${MY_USERNAME}/.local")"
+
+  # check to see if UID and GID match
+  if [ "${OWNER}" != "${MY_UID}" ] || [ "${GROUP}" != "${MY_GID}" ]
+  then
+    # UID or GID doesn't match, set permissions
+    echo "WARNING: owner or group (${OWNER}:${GROUP}) not set correctly on '/home/${MY_USERNAME}/.local'"
+    echo "INFO: setting correct permissions (${MY_UID}:${MY_GID})"
+    chown "${MY_UID}":"${MY_GID}" "/home/${MY_USERNAME}/.local"
+  fi
+fi
+
 # start the CMD
 echo "INFO: Running ${1} as ${MY_USERNAME}:${MY_GROUP} (${MY_UID}:${MY_GID})"
 
