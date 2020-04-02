@@ -8,15 +8,15 @@ To pull this image:
 
 Example usage:
 
-1. Make sure `${HOME}/.cache/pip` exists:
+1. Make sure `${HOME}/.cache` and `${HOME}/.local` exist:
 
     ```
-    mkdir -p ${HOME}/.cache/pip
+    mkdir ${HOME}/.cache ${HOME}/.local
     ```
 
 1. Run tox:
 
-    _Note:_ Before running tox, make sure that you have bind mounts for all of the necessary files like your `.gitconfig`, `.ssh`, `.cache` files and directories; whatever you'll need in the container.
+    _Note:_ Before running tox, make sure that you have bind mounts for all of the necessary files, such as your `.gitconfig`, `.ssh`, `.cache` files and directories; whatever you'll need in the container.
 
     ```
     docker run -it --rm \
@@ -25,9 +25,11 @@ Example usage:
       -e MY_UID="$(id -u)" \
       -e MY_GID="$(id -g)" \
       --tmpfs /tmp \
-      -v "${HOME}/.cache/pip":/home/"${USER}/.cache/pip" \
-      -v "${HOME}/.gitconfig":"/home/${USER}/.gitconfig" \
-      -v "${HOME}/.ssh":/home/"${USER}/.ssh" \
+      --tmpfs /var/log \
+      -v "${HOME}/.cache":/home/"${USER}/.cache" \
+      -v "${HOME}/.gitconfig":"/home/${USER}/.gitconfig":ro \
+      -v "${HOME}/.local":"/home/${USER}/.local" \
+      -v "${HOME}/.ssh":/home/"${USER}/.ssh":ro \
       -v "${PWD}":/data \
       -w /data \
       mbentley/tox \
