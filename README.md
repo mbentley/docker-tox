@@ -61,7 +61,7 @@ If you wish to run tox and have it appear to run as if it is natively installed 
 ```bash
 tox() {
   docker run -it --rm \
-    --name tox \
+    --name "tox-$(date +%s)" \
     -e MY_USERNAME="${USER}" \
     -e MY_UID="$(id -u)" \
     -e MY_GID="$(id -g)" \
